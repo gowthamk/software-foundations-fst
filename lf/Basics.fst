@@ -49,12 +49,12 @@ let next_weekday = function
     | Thursday -> Friday
     | _ -> Monday
 
-val next_weekday_test: unit -> Lemma (ensures (next_weekday Friday = Monday))
-let next_weekday_test () = ()
+let next_weekday_test () : Lemma (next_weekday Friday == Monday) =
+  normalize_term_spec (next_weekday Friday)
 
-val next_weekday_test': unit -> Lemma
-  (ensures (next_weekday (next_weekday Saturday) = Tuesday))
-let next_weekday_test' () = ()
+let next_weekday_test' () : Lemma
+  (next_weekday (next_weekday Saturday) == Tuesday) =
+    normalize_term_spec (next_weekday (next_weekday Saturday))
 
 (** ** Booleans *)
 
@@ -79,39 +79,39 @@ let orb b1 b2 =
   | T -> T
   | F -> b2
 
-val test_orb1: unit -> Lemma (ensures (orb T T = T))
-let test_orb1 () = ()
+let test_orb1 () : Lemma (orb T T == T) =
+  normalize_term_spec (orb T T)
 
-val test_orb2: unit -> Lemma (ensures (orb F F = F))
-let test_orb2 () = ()
+let test_orb2 () : Lemma (orb F F == F) =
+  normalize_term_spec (orb F F)
 
-val test_orb3: unit -> Lemma (ensures (orb F T = T))
-let test_orb3 () = ()
+let test_orb3 () : Lemma (orb F T == T) =
+  normalize_term_spec (orb F T)
 
-val test_orb4: unit -> Lemma (ensures (orb T T = T))
-let test_orb4 () = ()
+let test_orb4 () : Lemma (orb T T == T) =
+  normalize_term_spec (orb T T)
 
 (** **** Exercise: 1 star, standard (nandb)
 
     Provide a definition of the function nandb.
     Use the following lemmas (test_nandb1 ... test_nandb4)
     to know about it's behavior.
-    Also fix the lemmas by replacing admit() with () and make sure
-    that they are proved *)
+    Also fix the lemmas by replacing admit() with commented code
+    and make sure that they are proved *)
 
 assume val nandb: a: my_bool -> b: my_bool -> my_bool
 
-val test_nandb1: unit -> Lemma (ensures (nandb T F = T))
-let test_nandb1 () = admit()
+let test_nandb1 () : Lemma (nandb T F == T) =
+  admit() // normalize_term_spec (nandb T F)
 
-val test_nandb2: unit -> Lemma (ensures (nandb F F = T))
-let test_nandb2 () = admit()
+let test_nandb2 () : Lemma (nandb F F == T) =
+  admit() // normalize_term_spec (nandb T F)
 
-val test_nandb3: unit -> Lemma (ensures (nandb F T = T))
-let test_nandb3 () = admit()
+let test_nandb3 () : Lemma (nandb F T == T) =
+  admit() // normalize_term_spec (nandb F T)
 
-val test_nandb4: unit -> Lemma (ensures (nandb T T = F))
-let test_nandb4 () = admit()
+let test_nandb4 () : Lemma (nandb T T == F) =
+  admit() // normalize_term_spec (nandb T T)
 
 (** [] *)
 
@@ -123,17 +123,17 @@ let test_nandb4 () = admit()
 
 assume val andb3: a: my_bool -> b: my_bool -> c: my_bool -> my_bool
 
-val test_andb31: unit -> Lemma (ensures (andb3 T T T = T))
-let test_andb31 () = admit()
+let test_andb31 () : Lemma (andb3 T T T == T) =
+  admit() // normalize_term_spec (andb3 T T T)
 
-val test_andb32: unit -> Lemma (ensures (andb3 F T T = F))
-let test_andb32 () = admit()
+let test_andb32 () : Lemma (andb3 F T T == F) =
+  admit() // normalize_term_spec (andb3 F T T)
 
-val test_andb33: unit -> Lemma (ensures (andb3 T F T = F))
-let test_andb33 () = admit()
+let test_andb33 () : Lemma (andb3 T F T == F)  =
+  admit() // normalize_term_spec (andb3 F T T)
 
-val test_andb34: unit -> Lemma (ensures (andb3 T T F = F))
-let test_andb34 () = admit()
+let test_andb34 () : Lemma (andb3 T T F == F) =
+  admit() // normalize_term_spec (andb3 F T T)
 
 (** [] *)
 
@@ -170,11 +170,11 @@ let all_zero = function
   | Bits B0 B0 B0 B0 -> T
   | Bits _ _ _ _ -> F
 
-val all_zero_test: unit -> Lemma (ensures all_zero (Bits B1 B0 B1 B0) = F)
-let all_zero_test () = ()
+let all_zero_test () : Lemma (all_zero (Bits B1 B0 B1 B0) == F) =
+  normalize_term_spec (all_zero (Bits B1 B0 B1 B0))
 
-val all_zero_test': unit -> Lemma (ensures all_zero (Bits B0 B0 B0 B0) = T)
-let all_zero_test' () = ()
+let all_zero_test' () : Lemma (all_zero (Bits B0 B0 B0 B0) == T) =
+  normalize_term_spec (all_zero (Bits B0 B0 B0 B0))
 
 (** ** Numbers *)
 
@@ -188,8 +188,8 @@ let pred = function
   | O -> O
   | S n' -> n'
 
-val pred_test: unit -> Lemma (ensures (pred (S (S O)) = S O))
-let pred_test () = ()
+let pred_test () : Lemma (pred (S (S O)) = S O) =
+  normalize_term_spec (pred (S (S O)))
 
 val minustwo: n: pnat -> Tot pnat
 let minustwo = function
@@ -197,8 +197,8 @@ let minustwo = function
   | S O -> O
   | S (S n') -> n'
 
-val minustwo_test: unit -> Lemma (ensures (minustwo (S (S (S (S O)))) = S (S O)))
-let minustwo_test () = ()
+let minustwo_test () : Lemma (minustwo (S (S (S (S O)))) = S (S O)) =
+  normalize_term_spec (minustwo (S (S (S (S O)))))
 
 val evenb: n: pnat -> Tot my_bool
 let rec evenb = function
@@ -209,11 +209,11 @@ let rec evenb = function
 val oddb: n: pnat -> Tot my_bool
 let oddb n = negb (evenb n)
 
-val test_oddb1: unit -> Lemma (ensures (oddb (S O) = T))
-let test_oddb1 () = ()
+let test_oddb1 () : Lemma (oddb (S O) = T) =
+  normalize_term_spec (oddb (S O))
 
-val test_oddb2: unit -> Lemma (ensures (oddb (S (S (S (S O)))) = F))
-let test_oddb2 () = ()
+let test_oddb2 () : Lemma (oddb (S (S (S (S O)))) = F) =
+  normalize_term_spec (oddb (S (S (S (S O)))))
 
 val plus: a: pnat -> b: pnat -> Tot pnat
 let rec plus a b =
@@ -221,9 +221,8 @@ let rec plus a b =
   | O -> b
   | S a' -> S (plus a' b)
 
-val plus_test: unit -> Lemma
-  (ensures (plus (S (S (S O))) (S (S O)) = S (S (S (S (S O))))))
-let plus_test () = ()
+let plus_test () : Lemma (plus (S (S (S O))) (S (S O)) = S (S (S (S (S O))))) =
+  normalize_term_spec (plus (S (S (S O))) (S (S O)))
 
 val mul: a: pnat -> b: pnat -> Tot pnat
 let rec mul a b =
@@ -231,9 +230,9 @@ let rec mul a b =
   | O -> O
   | S a' -> plus b (mul a' b)
 
-val mul_test: unit -> Lemma
-  (ensures (mul (S (S (S O))) (S (S (S O))) = S (S (S (S (S (S (S (S (S O))))))))))
-let mul_test () = ()
+let mul_test () : Lemma
+  (mul (S (S (S O))) (S (S (S O))) = S (S (S (S (S (S (S (S (S O))))))))) =
+  normalize_term_spec (mul (S (S (S O))) (S (S (S O))))
 
 val minus: a: pnat -> b: pnat -> Tot pnat
 let rec minus a b =
@@ -260,9 +259,8 @@ let rec exp base power =
 
 assume val factorial: n: pnat -> pnat
 
-val test_factorial: unit -> Lemma
-  (ensures (factorial (S (S (S O))) = S (S (S (S (S (S O)))))))
-let test_factorial () = admit()
+let test_factorial () : Lemma (factorial (S (S (S O))) = S (S (S (S (S (S O)))))) =
+  admit() // normalize_term_spec (factorial (S (S (S O))))
 
 (** [] *)
 
@@ -280,14 +278,14 @@ let rec leb a b =
   | S _, O -> F
   | S a', S b' -> leb a' b'
 
-val test_leb1: unit -> Lemma (ensures (leb (S (S O)) (S (S O)) == T))
-let test_leb1 () = ()
+let test_leb1 () : Lemma (leb (S (S O)) (S (S O)) == T) =
+  normalize_term_spec (leb (S (S O)) (S (S O)))
 
-val test_leb2: unit -> Lemma (ensures (leb (S (S O)) (S (S (S (S O)))) == T))
-let test_leb2 () = ()
+let test_leb2 () : Lemma (leb (S (S O)) (S (S (S (S O)))) == T) =
+  normalize_term_spec (leb (S (S O)) (S (S (S (S O)))))
 
-val test_leb3: unit -> Lemma (ensures (leb (S (S (S (S O)))) (S (S O)) == F))
-let test_leb3 () = ()
+let test_leb3 () : Lemma (leb (S (S (S (S O)))) (S (S O)) == F) =
+  normalize_term_spec (leb (S (S (S (S O)))) (S (S O)))
 
 (** **** Exercise: 1 star, standard (ltb)
 
@@ -299,40 +297,33 @@ let test_leb3 () = ()
 
 assume val ltb: a: pnat -> b: pnat -> my_bool
 
-val test_ltb1: unit -> Lemma (ensures (ltb (S (S O)) (S (S O)) == F))
-let test_ltb1 () = admit()
+let test_ltb1 () : Lemma (ltb (S (S O)) (S (S O)) == F) =
+  admit() // normalize_term_spec (ltb (S (S O)) (S (S O)))
 
-val test_ltb2: unit -> Lemma (ensures (ltb (S (S O)) (S (S (S (S O)))) == T))
-let test_ltb2 () = admit()
+let test_ltb2 () : Lemma (ltb (S (S O)) (S (S (S (S O)))) == T) =
+  admit() // normalize_term_spec (ltb (S (S O)) (S (S (S (S O)))))
 
-val test_ltb3: unit -> Lemma (ensures (ltb (S (S (S (S O)))) (S (S O)) == F))
-let test_ltb3 () = admit()
+let test_ltb3 () : Lemma (ltb (S (S (S (S O)))) (S (S O)) == F) =
+  admit() // normalize_term_spec (ltb (S (S (S (S O)))) (S (S O)))
 
 (** [] *)
 
 (** * Proof by Simplification *)
 
-val plus_O_n: n: pnat -> Lemma (ensures (plus O n = n))
-let plus_O_n n = ()
+let plus_O_n (n: pnat) : Lemma (ensures (plus O n = n)) = ()
 
-val plus_S_l: n: pnat -> Lemma (ensures (plus (S O) n = S n))
-let plus_S_l n = ()
+let plus_S_l (n: pnat) : Lemma (ensures (plus (S O) n = S n)) = ()
 
-val mul_O_l: n: pnat -> Lemma (ensures (mul O n = O))
-let mul_O_l n = ()
+let mul_O_l (n: pnat) : Lemma (ensures (mul O n = O)) = ()
 
 (** * Proof by Rewriting *)
 
-val plus_id_example: a: pnat -> b: pnat -> Lemma
-  (ensures (a = b ==> plus a a = plus b b))
-let plus_id_example a b = ()
+let plus_id_example (a: pnat) (b: pnat) : Lemma
+  (ensures (a = b ==> plus a a = plus b b)) = ()
 
-(** **** Exercise: 1 star, standard (plus_id_exercise)
-
-    Remove admit() and fill in the proof. *)
-val plus_id_exercise: a: pnat -> b: pnat -> c: pnat -> Lemma
+(** **** Exercise: 1 star, standard (plus_id_exercise) *)
+assume val plus_id_exercise: a: pnat -> b: pnat -> c: pnat -> Lemma
   (ensures (a = b ==> b = c ==> plus a b = plus b c))
-let plus_id_exercise a b c = admit()
 (** [] *)
 
 val mul_n_O: n: pnat -> Lemma (ensures (O = mul n O))
